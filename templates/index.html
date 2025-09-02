@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Weather App - Flask</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+    <div class="container">
+        <h1>Weather App</h1>
+        <form method="POST" action="/">
+            <div class="input-section">
+                <input type="text" name="location" id="locationInput" placeholder="Enter city, zip code, or GPS coordinates" autocomplete="off" />
+                <button type="submit">Get Weather</button>
+                <button type="button" id="useGeoBtn">Use Current Location</button>
+            </div>
+        </form>
+
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+
+        {% if weather %}
+        <div id="weatherResult" class="weather-result">
+            <div class="weather-overview">
+                <h2>{{ location.name }}{% if location.state %}, {{ location.state }}{% endif %}, {{ location.country }}</h2>
+                <img src="https://openweathermap.org/img/wn/{{ weather.current.weather[0].icon }}@2x.png" alt="{{ weather.current.weather[0].description }}" />
+                <p>{{ weather.current.weather[0].description }}</p>
+                <p>Temperature: {{ weather.current.temp }} °C</p>
+                <p>Humidity: {{ weather.current.humidity }}%</p>
+                <p>Wind Speed: {{ weather.current.wind_speed }} m/s</p>
+            </div>
+
+            <h3>5-Day Forecast</h3>
+            <div id="forecast" class="forecast">
+                {% for day in weather.daily[1:6] %}
+                <div class="forecast-day">
+                    <h4>{{ day.dt | to_datetime | strftime('%a') }}</h4>
+                    <img src="https://openweathermap.org/img/wn/{{ day.weather[0].icon }}@2x.png" alt="{{ day.weather[0].description }}" />
+                    <p>{{ day.temp.max }}° / {{ day.temp.min }}°C</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <button id="infoBtn">Info</button>
+        <div id="infoModal" class="modal hidden">
+            <div class="modal-content">
+                <span id="closeModal" class="close">&times;</span>
+                <p>This Weather App was built for the Product Manager Accelerator (PMA). It provides current weather and a 5-day forecast based on your input or location.</p>
+                <p>Visit our LinkedIn: Product Manager Accelerator</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>

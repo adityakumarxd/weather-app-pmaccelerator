@@ -1,0 +1,100 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #eef2f3;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 600px;
+    margin: 2rem auto;
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+h1, h2, h3 {
+    text-align: center;
+}
+
+.input-section {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 1rem;
+}
+
+input[type="text"] {
+    flex-grow: 1;
+    padding: 0.5rem;
+    font-size: 1rem;
+}
+
+button {
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+}
+
+.weather-result.hidden, .modal.hidden {
+    display: none;
+}
+
+.weather-overview {
+    text-align: center;
+}
+
+.weather-overview img {
+    width: 80px;
+    height: 80px;
+}
+
+.forecast {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+}
+
+.forecast-day {
+    background: #dbe9f4;
+    padding: 0.5rem;
+    border-radius: 5px;
+    width: 18%;
+    text-align: center;
+}
+
+.forecast-day img {
+    width: 50px;
+    height: 50px;
+}
+
+#infoBtn {
+    display: block;
+    margin: 1rem auto 0 auto;
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0; 
+    bottom: 0;
+    background: rgba(0,0,0,0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background: white;
+    padding: 1rem 2rem;
+    border-radius: 10px;
+    max-width: 400px;
+    text-align: center;
+}
+
+.close {
+    float: right;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
