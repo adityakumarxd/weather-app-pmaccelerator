@@ -1,60 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Weather App - Flask</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+    <meta charset="UTF-8">
+    <title>Weather App | PMA Candidate</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <div class="container">
-        <h1>Weather App</h1>
-        <form method="POST" action="/">
-            <div class="input-section">
-                <input type="text" name="location" id="locationInput" placeholder="Enter city, zip code, or GPS coordinates" autocomplete="off" />
-                <button type="submit">Get Weather</button>
-                <button type="button" id="useGeoBtn">Use Current Location</button>
-            </div>
-        </form>
-
-        {% if error %}
-            <p class="error">{{ error }}</p>
-        {% endif %}
-
-        {% if weather %}
-        <div id="weatherResult" class="weather-result">
-            <div class="weather-overview">
-                <h2>{{ location.name }}{% if location.state %}, {{ location.state }}{% endif %}, {{ location.country }}</h2>
-                <img src="https://openweathermap.org/img/wn/{{ weather.current.weather[0].icon }}@2x.png" alt="{{ weather.current.weather[0].description }}" />
-                <p>{{ weather.current.weather[0].description }}</p>
-                <p>Temperature: {{ weather.current.temp }} °C</p>
-                <p>Humidity: {{ weather.current.humidity }}%</p>
-                <p>Wind Speed: {{ weather.current.wind_speed }} m/s</p>
-            </div>
-
-            <h3>5-Day Forecast</h3>
-            <div id="forecast" class="forecast">
-                {% for day in weather.daily[1:6] %}
-                <div class="forecast-day">
-                    <h4>{{ day.dt | to_datetime | strftime('%a') }}</h4>
-                    <img src="https://openweathermap.org/img/wn/{{ day.weather[0].icon }}@2x.png" alt="{{ day.weather[0].description }}" />
-                    <p>{{ day.temp.max }}° / {{ day.temp.min }}°C</p>
-                </div>
-                {% endfor %}
-            </div>
+  <div class="background-circles">
+    <div class="circle circle1"></div>
+    <div class="circle circle2"></div>
+  </div>
+  <div class="container">
+    <div class="glass-card">
+      <h1>Weather App ☀️</h1>
+      <form method="post">
+        <input type="text" name="city" placeholder="Enter city name" required>
+        <button type="submit">Get Weather</button>
+      </form>
+      {% if error %}
+        <div class="error">{{ error }}</div>
+      {% endif %}
+      {% if weather %}
+        <div class="card {{ weather.weather[0].main|lower }}">
+          <h2>{{ weather.name }}, {{ weather.sys.country }}</h2>
+          <h3>{{ weather.weather[0].description.title() }}</h3>
+          <div class="info">
+            <span class="temp">{{ weather.main.temp }}&deg;C</span>
+            <span class="details">
+              💧 Humidity: {{ weather.main.humidity }}%<br>
+              🌬️ Wind: {{ weather.wind.speed }} m/s
+            </span>
+          </div>
         </div>
-        {% endif %}
-
-        <button id="infoBtn">Info</button>
-        <div id="infoModal" class="modal hidden">
-            <div class="modal-content">
-                <span id="closeModal" class="close">&times;</span>
-                <p>This Weather App was built for the Product Manager Accelerator (PMA). It provides current weather and a 5-day forecast based on your input or location.</p>
-                <p>Visit our LinkedIn: Product Manager Accelerator</p>
-            </div>
-        </div>
+      {% endif %}
+      <div class="footer">
+        <small>
+          Built by <a href="https://www.linkedin.com/in/adityakumarxd/" target="_blank">Aditya Kumar</a>. Powered by OpenWeatherMap.<br>
+          <a href="https://www.pmaccelerator.io/" target="_blank">Product Manager Accelerator</a>
+        </small>
+      </div>
     </div>
-
-    <script src="{{ url_for('static', filename='app.js') }}"></script>
+  </div>
 </body>
 </html>
