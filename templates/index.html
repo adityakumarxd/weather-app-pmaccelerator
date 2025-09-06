@@ -1,45 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Weather App | PMA Candidate</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <meta charset="UTF-8" />
+  <title>Weather App | PM Accelerator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
 </head>
 <body>
-  <div class="background-circles">
-    <div class="circle circle1"></div>
-    <div class="circle circle2"></div>
-  </div>
-  <div class="container">
-    <div class="glass-card">
-      <h1>Weather App ☀️</h1>
-      <form method="post">
-        <input type="text" name="city" placeholder="Enter city name" required>
-        <button type="submit">Get Weather</button>
-      </form>
-      {% if error %}
-        <div class="error">{{ error }}</div>
+  <div class="container center-column glass-card">
+    <h1>Weather App ☀️</h1>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert {{ category }}">{{ message }}</div>
+        {% endfor %}
       {% endif %}
-      {% if weather %}
-        <div class="card {{ weather.weather[0].main|lower }}">
-          <h2>{{ weather.name }}, {{ weather.sys.country }}</h2>
-          <h3>{{ weather.weather[0].description.title() }}</h3>
-          <div class="info">
-            <span class="temp">{{ weather.main.temp }}&deg;C</span>
-            <span class="details">
-              💧 Humidity: {{ weather.main.humidity }}%<br>
-              🌬️ Wind: {{ weather.wind.speed }} m/s
-            </span>
-          </div>
+    {% endwith %}
+
+    <form method="POST" novalidate>
+      <input type="text" name="location" placeholder="Enter city, zip, or place" required />
+      <label for="start_date">Start Date:</label>
+      <input type="date" name="start_date" required />
+      <label for="end_date">End Date:</label>
+      <input type="date" name="end_date" required />
+      <button type="submit">Get Weather</button>
+    </form>
+
+    {% if weather %}
+      <div class="card {{ weather.weather[0].main|lower }}">
+        <h2>{{ weather.name }}, {{ weather.sys.country }}</h2>
+        <h3>{{ weather.weather[0].description.title() }}</h3>
+        <div class="info">
+          <span class="temp">{{ weather.main.temp }}&deg;C</span>
+          <span class="details">
+            💧 Humidity: {{ weather.main.humidity }}%<br />
+            🌬️ Wind: {{ weather.wind.speed }} m/s
+          </span>
         </div>
-      {% endif %}
-      <div class="footer">
-        <small>
-          Built by <a href="https://www.linkedin.com/in/adityakumarxd/" target="_blank">Aditya Kumar</a>. Powered by OpenWeatherMap.<br>
-          <a href="https://www.pmaccelerator.io/" target="_blank">Product Manager Accelerator</a>
-        </small>
       </div>
+      {% if video_url %}
+        <h3>Location Video</h3>
+        <iframe
+          width="320"
+          height="180"
+          src="{{ video_url }}"
+          title="YouTube video"
+          frameborder="0"
+          allowfullscreen
+        ></iframe>
+      {% endif %}
+    {% endif %}
+
+    <div style="margin-top: 1.5em;">
+      <a href="{{ url_for('history') }}" class="button-link">View Saved Queries & Export</a>
     </div>
   </div>
 </body>

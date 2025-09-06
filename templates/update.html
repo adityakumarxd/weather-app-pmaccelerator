@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Update Weather Query</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+  <div class="container center-column glass-card">
+    <h1>Update Weather Query</h1>
+
+    {% if error %}
+      <div class="alert error">{{ error }}</div>
+    {% endif %}
+
+    <form method="POST">
+      <label>
+        Location:
+        <input type="text" name="location" value="{{ query.location }}" required />
+      </label>
+      <label>
+        Start Date:
+        <input type="date" name="start_date" value="{{ query.start_date }}" required />
+      </label>
+      <label>
+        End Date:
+        <input type="date" name="end_date" value="{{ query.end_date }}" required />
+      </label>
+      <button type="submit">Update</button>
+    </form>
+
+    <a href="{{ url_for('history') }}" class="button-link">Back to History</a>
+  </div>
+</body>
+</html>

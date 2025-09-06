@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Saved Weather Queries</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+  <div class="container center-column glass-card">
+    <h1>Saved Weather Queries</h1>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert {{ category }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    {% if queries %}
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Location</th>
+            <th>Date Range</th>
+            <th>Temp (°C)</th>
+            <th>Weather</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for q in queries %}
+          <tr>
+            <td>{{ q.id }}</td>
+            <td><a href="{{ url_for('show_map', location=q.location) }}">{{ q.location }}</a></td>
+            <td>{{ q.start_date }} - {{ q.end_date }}</td>
+            <td>{{ q.parsed_weather.main.temp if q.parsed_weather else 'N/A' }}</td>
+            <td>{{ q.parsed_weather.weather[0].description.title() if q.parsed_weather else 'N/A' }}</td>
+            <td>
+              <a href="{{ url_for('update', query_id=q.id) }}">Edit</a>
+              <form action="{{ url_for('delete', query_id=q.id) }}" method="POST" style="display:inline" onsubmit="return confirm('Delete this entry?');">
+                <button type="submit">Delete</button>
+              </form>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p>No saved queries yet.</p>
+    {% endif %}
+
+    <div class="export-buttons" style="margin-top: 1.5em;">
+      <a href="{{ url_for('export_data', export_format='json') }}" class="button-link">Export JSON</a>
+      <a href="{{ url_for('export_data', export_format='csv') }}" class="button-link">Export CSV</a>
+    </div>
+
+    <a href="{{ url_for('index') }}" class="button-link" style="margin-top: 1.5em;">Back to Search</a>
+  </div>
+</body>
+</html>
